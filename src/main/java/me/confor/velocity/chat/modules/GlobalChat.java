@@ -17,6 +17,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.user.User;
+
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -29,11 +33,13 @@ public class GlobalChat {
     private final Logger logger;
     private final Path dataDirectory;
     private Config config;
+    private final LuckPerms luckPerms;
 
-    public GlobalChat(ProxyServer server, Logger logger, Path dataDirectory) {
+    public GlobalChat(ProxyServer server, Logger logger, Path dataDirectory, LuckPerms luckPerms) {
         this.server = server;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
+        this.luckPerms = luckPerms;
 
         this.config = new Config(dataDirectory);
     }
@@ -56,9 +62,18 @@ public class GlobalChat {
         String server = currentServer.get().getServerInfo().getName();
         String message = event.getMessage();
 
+        User lpUser = luckPerms.getUserManager().getUser(event.getPlayer().getUniqueId());
+        CachedMetaData lpUserMetadata = lpUser.getCachedData().getMetaData();
+        String prefix = lpUserMetadata.getPrefix();
+        String suffix = lpUserMetadata.getSuffix();
+
         Component msg = parseMessage(config.GLOBAL_CHAT_FORMAT, List.of(
                 new ChatTemplate("player", player, false),
                 new ChatTemplate("server", server, false),
+
+                new ChatTemplate("luckperms_prefix", (prefix == null ? "" : prefix), false),
+                new ChatTemplate("luckperms_suffix", (suffix == null ? "" : suffix), false),
+
                 new ChatTemplate("message", message, config.GLOBAL_CHAT_ALLOW_MSG_FORMATTING)
         ));
 

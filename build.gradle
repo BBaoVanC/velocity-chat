@@ -24,6 +24,9 @@ dependencies {
     compileOnly 'com.velocitypowered:velocity-api:3.1.2-SNAPSHOT'
     annotationProcessor 'com.velocitypowered:velocity-api:3.1.2-SNAPSHOT'
 
+    // for LuckPerms placeholders
+    compileOnly 'net.luckperms:api:5.4'
+
     // templating dependency
     implementation 'net.kyori:adventure-api:4.11.0-SNAPSHOT'
     implementation 'net.kyori:adventure-text-minimessage:4.11.0-SNAPSHOT'

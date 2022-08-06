@@ -6,6 +6,8 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import me.confor.velocity.chat.modules.GlobalChat;
+import net.luckperms.api.LuckPermsProvider;
+
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
@@ -33,7 +35,7 @@ public class Plugin {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.register(new GlobalChat(this.server, this.logger, this.dataDirectory));
+        this.register(new GlobalChat(this.server, this.logger, this.dataDirectory, LuckPermsProvider.get()));
     }
 
     private void register(Object x) {
