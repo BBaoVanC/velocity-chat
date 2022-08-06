@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'eclipse'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.0.1'
-    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 group = 'me.confor.velocity'
@@ -62,9 +61,3 @@ sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
 
 rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
 project.eclipse.synchronizationTasks(generateTemplates)
-
-shadowJar {
-    manifest {
-        attributes 'Main-Class': 'me.confor.velocity.chat.Plugin'
-    }
-}
